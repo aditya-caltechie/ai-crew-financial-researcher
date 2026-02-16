@@ -8,6 +8,69 @@ The **AI Crew Financial Researcher** is a CrewAI-based application that orchestr
 
 ---
 
+## Flow Diagram
+
+The following sequence diagram shows the end-to-end flow from user command through crew execution to final output:
+
+```
+     User              main.py           Research Crew      Researcher Agent    Analyst Agent     output/report.md
+       │                   │                     │                    │                 │                   │
+       │  crewai run       │                     │                    │                 │                   │
+       │ ────────────────► │                     │                    │                 │                   │
+       │                   │ Inputs = {'company': 'Tesla'}            │                 │                   │
+       │                   │                     │                    │                 │                   │
+       │                   │ kickoff(inputs)     │                    │                 │                   │
+       │                   │ ─────────────────► │                    │                 │                   │
+       │                   │                     │                    │                 │                   │
+       │                   │                     │ Task 1: Research   │                 │                   │
+       │                   │                     │ ─────────────────► │                 │                   │
+       │                   │                     │                    │ [SerperDevTool] │                   │
+       │                   │                     │ research document  │                 │                   │
+       │                   │                     │ ◄───────────────── │                 │                   │
+       │                   │                     │                    │                 │                   │
+       │                   │                     │ Task 2: Analysis   │                 │                   │
+       │                   │                     │ (context: Task 1)  │                 │                   │
+       │                   │                     │ ─────────────────────────────────►  │                   │
+       │                   │                     │                    │                 │ write report      │
+       │                   │                     │                    │                 │ ────────────────► │
+       │                   │                     │                    │                 │                   │
+       │                   │                     │ result             │                 │                   │
+       │                   │ ◄────────────────── │                    │                 │                   │
+       │                   │                     │                    │                 │                   │
+       │ print(result.raw) │                     │                    │                 │                   │
+       │ ◄──────────────── │                     │                    │                 │                   │
+       │                   │                     │                    │                 │                   │
+```
+
+**Mermaid version** (renders in GitHub, many IDEs):
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant main as main.py
+    participant Crew as Research Crew
+    participant Researcher as Researcher Agent
+    participant Analyst as Analyst Agent
+    participant Output as output/report.md
+
+    User->>main: crewai run
+    Note over main: Inputs = {'company': 'Tesla'}
+    main->>Crew: kickoff(inputs)
+
+    Crew->>Researcher: Task 1: Research (company, news, outlook)
+    Researcher->>Researcher: SerperDevTool (web search)
+    Researcher-->>Crew: research document
+
+    Crew->>Analyst: Task 2: Analysis (context: research)
+    Analyst->>Output: write report
+    Analyst-->>Crew: report content
+
+    Crew-->>main: result
+    main->>User: print(result.raw)
+```
+
+---
+
 ## How CrewAI Works
 
 CrewAI is an open-source framework for orchestrating autonomous AI agents. Its core concepts are:
