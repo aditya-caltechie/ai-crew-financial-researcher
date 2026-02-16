@@ -9,10 +9,14 @@ class ResearchCrew():
 
     @agent
     def researcher(self) -> Agent:
+        # SerperDevTool: enables the Researcher to query the web in real time. Used so the agent
+        # can fetch current company news, financials, and market data (not in the LLM's training
+        # cut-off). The agent calls this tool during the research_task; results are passed to the
+        # Analyst as context. Requires SERPER_API_KEY in the environment.
         return Agent(
             config=self.agents_config['researcher'],
             verbose=True,
-            tools=[SerperDevTool()]
+            tools=[SerperDevTool()],
         )
 
     @agent

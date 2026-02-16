@@ -50,6 +50,40 @@ The application uses a **Crew** of two agents:
 
 Tasks execute sequentially: the Analyst receives the Researcher’s output as context before writing the report.
 
+Two mechanisms drive the pipeline: **tools** (what agents can do) and **context** (what one task passes to the next). Both are configured in specific places:
+
+| Mechanism | Where it's defined | What it does here |
+|-----------|--------------------|--------------------|
+| **Tools** | `crew.py` — `tools=[SerperDevTool()]` on the Researcher agent | Lets the Researcher query the web via Serper; the Analyst has no tools. |
+| **Context** | `config/tasks.yaml` — `context: [research_task]` on `analysis_task` | Passes the research task's output into the Analyst's task so it can write the report. |
+
+---
+
+### Tools (in `crew.py`)
+
+**SerperDevTool** is the web-search tool attached only to the **Researcher** agent in `crew.py`. It is how the pipeline gets up-to-date information.
+
+| Aspect | Detail |
+|--------|--------|
+| **Why** | LLMs have a knowledge cut-off and cannot see recent news, earnings, or market events. SerperDevTool lets the Researcher query the live web so the report is based on **current** company and market data. |
+| **How** | The Researcher agent is given `tools=[SerperDevTool()]`. When working on the research task, the agent calls this tool (backed by the [Serper](https://serper.dev/) search API) to run queries and receive snippets and links. That search output is then used as context for the Analyst to write the report. |
+| **Config** | Requires `SERPER_API_KEY` in `.env`. The Analyst has no tools—it only uses the Researcher's output. |
+
+### Context (in `config/tasks.yaml`)
+
+**Context** is how one task’s output is passed as input to a later task. It is **not** set in `crew.py`—only in **`config/tasks.yaml`**. The block that passes context is under `analysis_task` (lines 31–33). This is the only place context is defined:
+
+```yaml
+# config/tasks.yaml — context being passed to the Analyst's task
+analysis_task:
+  agent: analyst
+  context:
+    - research_task   # ← research_task output is passed here as input
+  output_file: output/report.md
+```
+
+When the crew runs, CrewAI runs `research_task` first (Researcher + SerperDevTool). That task's output is then injected as **context** into `analysis_task`, so the Analyst's LLM sees the research document when writing the report. The Researcher's task has no `context`; only the Analyst's task receives context.
+
 For detailed architecture, flow diagrams, and concepts, see [docs/](docs/).
 
 ---
