@@ -41,6 +41,32 @@ Use it to quickly produce research reports on any public company for due diligen
 
 ## Architecture
 
+### How this is multi-agent (and why)
+
+The pipeline is **multi-agent** because it uses **two specialized agents** that each own one task. The mapping from tasks to agents is defined in **`config/tasks.yaml`**:
+
+| Task (in `config/tasks.yaml`) | Agent   | What it does |
+|------------------------------|--------|--------------|
+| **research_task**            | researcher | Gathers data on the company (status, performance, challenges, news, outlook) using web search. Produces a structured research document. |
+| **analysis_task**            | analyst   | Takes the research as **context** and writes the final report (executive summary, insights, market outlook, professional formatting). |
+
+**How it’s multi-agent:**
+
+- **Two agents, two tasks:** Each task has a single `agent` (e.g. `agent: researcher`, `agent: analyst`). The Researcher does not write the report; the Analyst does not run search. Roles are split by responsibility.
+- **Context links the tasks:** In `tasks.yaml`, `analysis_task` has `context: [research_task]`. That passes the Researcher’s output into the Analyst’s task so the report is based on the gathered research.
+- **Sequential flow:** The crew runs `research_task` first, then `analysis_task`. So the pipeline is: **Researcher (with tools) → research output → Analyst (with that context) → report.**
+
+**Why multi-agent (instead of one agent):**
+
+- **Separation of concerns:** Research (finding and organizing facts) is different from analysis (synthesis, narrative, recommendations). One agent does retrieval and structuring; the other does interpretation and writing.
+- **Right tools per role:** Only the Researcher needs web search (SerperDevTool). The Analyst only needs the research text. Giving one agent “search + write” would blur roles and make prompts and tool use harder to control.
+- **Different LLMs per role:** The Researcher can use a fast, cost-effective model (e.g. gpt-4o-mini); the Analyst can use a different model (e.g. Groq) tuned for long-form writing. Each agent’s LLM is configured in `config/agents.yaml`.
+- **Clearer outputs:** Each task has a focused `expected_output` in `tasks.yaml`. The research task yields a “research document”; the analysis task yields the “polished report.” That keeps outputs well-defined and easier to debug or extend.
+
+So the multi-agent design comes from **tasks.yaml** (task–agent assignment and context) plus **crew.py** (agents and tools). Together they form a two-step, two-agent pipeline: research → report.
+
+---
+
 The application uses a **Crew** of two agents:
 
 | Agent      | Role                      | Tools          | LLM                      |
