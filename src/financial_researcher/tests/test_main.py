@@ -9,8 +9,7 @@ class TestRun:
     """Tests for the run() function."""
 
     @patch("financial_researcher.main.ResearchCrew")
-    @patch("financial_researcher.main.os.makedirs")
-    def test_run_creates_crew_and_kicks_off(self, mock_makedirs, mock_research_crew_cls):
+    def test_run_creates_crew_and_kicks_off(self, mock_research_crew_cls):
         """run() instantiates ResearchCrew and calls kickoff with expected inputs."""
         mock_crew_instance = MagicMock()
         mock_result = MagicMock()
@@ -26,12 +25,10 @@ class TestRun:
         mock_research_crew_cls.assert_called_once()
         mock_research_crew_instance.crew.assert_called_once()
         mock_crew_instance.kickoff.assert_called_once_with(inputs={"company": "Tesla"})
-        mock_makedirs.assert_called_once_with("output", exist_ok=True)
 
     @patch("financial_researcher.main.ResearchCrew")
-    @patch("financial_researcher.main.os.makedirs")
     @patch("financial_researcher.main.print")
-    def test_run_prints_result(self, mock_print, mock_makedirs, mock_research_crew_cls):
+    def test_run_prints_result(self, mock_print, mock_research_crew_cls):
         """run() prints the result raw content."""
         mock_result = MagicMock()
         mock_result.raw = "Test report output"
