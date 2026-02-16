@@ -8,41 +8,7 @@ The **AI Crew Financial Researcher** is a CrewAI-based application that orchestr
 
 ---
 
-## Flow Diagram
-
-The following sequence diagram shows the end-to-end flow from user command through crew execution to final output:
-
-```
-     User              main.py           Research Crew      Researcher Agent    Analyst Agent     output/report.md
-       │                   │                     │                    │                 │                   │
-       │  crewai run       │                     │                    │                 │                   │
-       │ ────────────────► │                     │                    │                 │                   │
-       │                   │ Inputs = {'company': 'Tesla'}            │                 │                   │
-       │                   │                     │                    │                 │                   │
-       │                   │ kickoff(inputs)     │                    │                 │                   │
-       │                   │ ─────────────────► │                    │                 │                   │
-       │                   │                     │                    │                 │                   │
-       │                   │                     │ Task 1: Research   │                 │                   │
-       │                   │                     │ ─────────────────► │                 │                   │
-       │                   │                     │                    │ [SerperDevTool] │                   │
-       │                   │                     │ research document  │                 │                   │
-       │                   │                     │ ◄───────────────── │                 │                   │
-       │                   │                     │                    │                 │                   │
-       │                   │                     │ Task 2: Analysis   │                 │                   │
-       │                   │                     │ (context: Task 1)  │                 │                   │
-       │                   │                     │ ─────────────────────────────────►  │                   │
-       │                   │                     │                    │                 │ write report      │
-       │                   │                     │                    │                 │ ────────────────► │
-       │                   │                     │                    │                 │                   │
-       │                   │                     │ result             │                 │                   │
-       │                   │ ◄────────────────── │                    │                 │                   │
-       │                   │                     │                    │                 │                   │
-       │ print(result.raw) │                     │                    │                 │                   │
-       │ ◄──────────────── │                     │                    │                 │                   │
-       │                   │                     │                    │                 │                   │
-```
-
-**Mermaid version** (renders in GitHub, many IDEs):
+## Flow Diagram - **Mermaid version** :
 
 ```mermaid
 sequenceDiagram
