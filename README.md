@@ -19,6 +19,29 @@ This project demonstrates how to build an AI-powered research pipeline with Crew
 
 Use it to quickly produce research reports on any public company for due diligence, market analysis, or learning.
 
+### What is CrewAI?
+
+CrewAI orchestrates AI agents to work together on complex tasks:
+
+```mermaid
+graph LR
+    A[Crew] --> B[Agent 1<br/>Role: Researcher]
+    A --> C[Agent 2<br/>Role: Analyst]
+    B --> D[Task 1<br/>Research]
+    C --> E[Task 2<br/>Analysis]
+    D -->|Context| E
+    
+    style A fill:#e1f5ff
+    style B fill:#fff4e1
+    style C fill:#fff4e1
+```
+
+**Key concepts:**
+- **Crew** = Team of agents working together
+- **Agent** = AI team member with a role, goal, and tools
+- **Task** = Work item assigned to an agent
+- **Context** = Output from one task passed to another
+
 ### Quick reference
 
 | Task        | Directory                  | Command                          |
@@ -40,6 +63,31 @@ Use it to quickly produce research reports on any public company for due diligen
 ---
 
 ## Architecture
+
+### Project Flow
+
+This project uses a simple sequential flow:
+
+```mermaid
+flowchart LR
+    Start[User Input<br/>company: Tesla] --> Step1[Researcher Agent<br/>+ Web Search Tool]
+    Step1 --> Step2[Research Document]
+    Step2 --> Step3[Analyst Agent]
+    Step3 --> End[Final Report<br/>output/report.md]
+    
+    style Start fill:#fff4e1
+    style Step1 fill:#e1f5ff
+    style Step2 fill:#e1ffe1
+    style Step3 fill:#e1f5ff
+    style End fill:#ffe1f5
+```
+
+**Execution steps:**
+1. User provides company name (e.g., "Tesla")
+2. Researcher agent searches the web for current information
+3. Research document is created
+4. Analyst agent receives research as context
+5. Final report is generated and saved
 
 ### How this is multi-agent (and why)
 
