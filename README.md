@@ -1,6 +1,10 @@
-# AI Crew Financial Researcher
+# Financial Researcher
 
 A multi-agent AI application that performs comprehensive financial research and reporting on companies using the [CrewAI](https://github.com/joaomdmoura/crewai) open-source framework. Two specialized agents collaborate: a **Researcher** gathers data via web search, and an **Analyst** synthesizes it into a structured markdown report.
+
+**CrewAI** is a Python framework for orchestrating autonomous AI agents. It lets you define agents (with roles, goals, and tools), chain them into tasks, and run them as a Crew. Agents collaborate by passing context between tasks and can use tools like web search, making CrewAI well-suited for multi-step research, analysis, and automation pipelines.
+
+Unlike the **OpenAI SDK** (a low-level API client you orchestrate manually), CrewAI provides built-in agent, task, and crew abstractions. Compared to **LangGraph** (graph-based state machines for complex control flow) and **AutoGen** (conversation-centric multi-agent chat), CrewAI is simpler and more task-oriented: you define roles and outputs, and the framework runs the pipeline. It’s a good fit when you want structured multi-step workflows without building orchestration from scratch.
 
 ---
 
@@ -112,19 +116,6 @@ From `src/financial_researcher/`:
 crewai run
 ```
 
-### Run with Python
-
-```bash
-cd src/financial_researcher
-python -m financial_researcher.main
-```
-
-Or:
-
-```bash
-financial_researcher
-```
-
 ### Customize the target company
 
 Edit `src/financial_researcher/src/financial_researcher/main.py`:
@@ -134,6 +125,26 @@ inputs = {
     'company': 'Apple'  # Change to any company name
 }
 ```
+
+---
+
+## Running tests
+
+From `src/financial_researcher/`, install dev dependencies and run the test suite:
+
+```bash
+cd src/financial_researcher
+
+# Install dev dependencies (pytest, pytest-mock)
+uv sync --extra dev
+# or: pip install -e ".[dev]"
+
+# Run all tests
+uv run pytest
+# or: pytest
+```
+
+Tests cover the main entrypoint (with mocked crew), crew/agent/task setup, and the custom tool. No API keys are required for tests.
 
 ---
 
@@ -190,7 +201,3 @@ crewai create crew my_project_name
 ```
 
 ---
-
-## License
-
-MIT

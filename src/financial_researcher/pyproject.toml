@@ -8,6 +8,12 @@ dependencies = [
     "crewai[tools]>=0.108.0,<1.0.0"
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-mock>=3.14.0",
+]
+
 [project.scripts]
 financial_researcher = "financial_researcher.main:run"
 run_crew = "financial_researcher.main:run"
@@ -21,3 +27,6 @@ build-backend = "hatchling.build"
 
 [tool.crewai]
 type = "crew"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
