@@ -54,23 +54,23 @@ CrewAI is an open-source framework for orchestrating autonomous AI agents. Its c
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                              Crew Kickoff                                    │
-│  ResearchCrew().crew().kickoff(inputs={'company': 'Tesla'})                  │
+│                              Crew Kickoff                                   │
+│  ResearchCrew().crew().kickoff(inputs={'company': 'Tesla'})                 │
 └─────────────────────────────────────────────────────────────────────────────┘
                                         │
                                         ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                         Process: Sequential                                  │
-│  Tasks execute one after another; each task's output is context for the next │
+│                         Process: Sequential                                 │
+│  Tasks execute one after another; each task's output is context for the next│
 └─────────────────────────────────────────────────────────────────────────────┘
                                         │
                     ┌───────────────────┴───────────────────┐
                     ▼                                       ▼
 ┌───────────────────────────────┐           ┌───────────────────────────────────┐
-│  Task 1: research_task        │           │  Task 2: analysis_task             │
-│  Agent: Senior Financial      │  ──────►  │  Agent: Market Analyst             │
-│  Researcher                   │  context  │  (uses research output as input)   │
-│  Tools: SerperDevTool         │           │  Output: output/report.md          │
+│  Task 1: research_task        │           │  Task 2: analysis_task            │
+│  Agent: Senior Financial      │  ──────►  │  Agent: Market Analyst            │
+│  Researcher                   │  context  │  (uses research output as input)  │
+│  Tools: SerperDevTool         │           │  Output: output/report.md         │
 └───────────────────────────────┘           └───────────────────────────────────┘
 ```
 
@@ -116,30 +116,30 @@ ai-crew-financial-researcher/
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                           ResearchCrew (@CrewBase)                            │
+│                           ResearchCrew (@CrewBase)                          │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  Agents (from config/agents.yaml)                                            │
+│  Agents (from config/agents.yaml)                                           │
 │  ┌─────────────────────────────┐  ┌─────────────────────────────────────┐   │
-│  │  researcher                 │  │  analyst                             │   │
-│  │  Role: Senior Financial     │  │  Role: Market Analyst & Report       │   │
-│  │        Researcher           │  │        writer                        │   │
-│  │  LLM: openai/gpt-4o-mini    │  │  LLM: groq/llama-3.3-70b-versatile   │   │
-│  │  Tools: SerperDevTool       │  │  Tools: none                         │   │
+│  │  researcher                 │  │  analyst                            │   │
+│  │  Role: Senior Financial     │  │  Role: Market Analyst & Report      │   │
+│  │        Researcher           │  │        writer                       │   │
+│  │  LLM: openai/gpt-4o-mini    │  │  LLM: groq/llama-3.3-70b-versatile  │   │
+│  │  Tools: SerperDevTool       │  │  Tools: none                        │   │
 │  └─────────────────────────────┘  └─────────────────────────────────────┘   │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  Tasks (from config/tasks.yaml)                                              │
+│  Tasks (from config/tasks.yaml)                                             │
 │  ┌─────────────────────────────┐  ┌─────────────────────────────────────┐   │
-│  │  research_task              │  │  analysis_task                       │   │
-│  │  • Company research         │  │  • Create report from research       │   │
-│  │  • 5 focus areas            │  │  • Executive summary, sections       │   │
-│  │  • agent: researcher        │  │  • agent: analyst                    │   │
-│  │                             │  │  • context: [research_task]          │   │
-│  │                             │  │  • output_file: output/report.md     │   │
+│  │  research_task              │  │  analysis_task                      │   │
+│  │  • Company research         │  │  • Create report from research      │   │
+│  │  • 5 focus areas            │  │  • Executive summary, sections      │   │
+│  │  • agent: researcher        │  │  • agent: analyst                   │   │
+│  │                             │  │  • context: [research_task]         │   │
+│  │                             │  │  • output_file: output/report.md    │   │
 │  └─────────────────────────────┘  └─────────────────────────────────────┘   │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  Crew                                                                        │
-│  • process: Process.sequential                                               │
-│  • verbose: True                                                             │
+│  Crew                                                                       │
+│  • process: Process.sequential                                              │
+│  • verbose: True                                                            │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
