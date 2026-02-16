@@ -367,12 +367,12 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    Input[inputs = {'company': 'Tesla'}] --> Agent1[Researcher Agent]
-    Agent1 --> Task1[research_task<br/>Uses SerperDevTool]
+    Input["inputs: company='Tesla'"] --> Agent1[Researcher Agent]
+    Agent1 --> Task1["research_task<br/>Uses SerperDevTool"]
     Task1 --> Output1[Research Document]
     Output1 --> Agent2[Analyst Agent]
-    Agent2 --> Task2[analysis_task<br/>Context: research_task]
-    Task2 --> Output2[Final Report<br/>output/report.md]
+    Agent2 --> Task2["analysis_task<br/>Context: research_task"]
+    Task2 --> Output2["Final Report<br/>output/report.md"]
     
     style Input fill:#fff4e1
     style Output1 fill:#e1f5ff

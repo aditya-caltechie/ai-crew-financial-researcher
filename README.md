@@ -261,6 +261,22 @@ ai-crew-financial-researcher/
 
 ---
 
+## Related Projects
+
+### Advanced Example: Stock Picker
+
+For a more advanced CrewAI implementation demonstrating additional features, check out [**ai-crew-stock-picker**](https://github.com/aditya-caltechie/ai-crew-stock-picker):
+
+- **Hierarchical process** — Manager agent delegates tasks to worker agents (vs. sequential process used here)
+- **Structured outputs** — Pydantic models for validated task results
+- **Custom tools** — Pushover notifications and other external integrations
+- **Memory** — RAG + SQLite for long-term, short-term, and entity memory
+- **Multi-step research** — Finds trending companies, researches each, then recommends the best investment
+
+This project uses a **sequential process** (tasks run in order), while Stock Picker demonstrates a **hierarchical process** (manager coordinates worker agents). Both patterns are useful depending on your workflow needs.
+
+---
+
 ## Create a New CrewAI Project
 
 To scaffold a new CrewAI project from scratch:
