@@ -49,6 +49,15 @@ sequenceDiagram
   Terminal->>User: === FINAL REPORT === ... Report saved to output/report.md
 ```
 
+**Screenshots from a real run** (what you see when you run the code):
+
+| Step | Screenshot | What it shows |
+|------|------------|---------------|
+| 1 | [Start and first task](#1-startup-and-crew-initialization) | `crewai run`, build, Crew Execution Started, research task assigned, "Thinking..." |
+| 2 | [Researcher uses Serper](#3-task-1-research-researcher-agent) | Thought, tool input (search query), Serper tool output (search results) |
+| 3 | [Task handoff](#2-sequential-flow-two-tasks-two-agents) | Research task ✓ Completed, analysis task Executing, Market Analyst task description |
+| 4 | [Completion and report](#5-final-report-in-the-terminal-and-on-disk) | Both tasks ✓ Completed, Crew Execution Completed, FINAL REPORT and content |
+
 ---
 
 ## How to Run
@@ -78,6 +87,10 @@ When you run the crew, the terminal shows a **sequential execution** of two task
 ### 1. Startup and crew initialization
 
 After `crewai run` you may see:
+
+![Demo: run command, build, Crew Execution Started, first task (Researcher) with task description and Thinking...](assets/demo-1-start.png)
+
+*Figure 1: Running `crewai run`, project build, Crew Execution Started (Name: crew, ID), and Task 1 assigned to the Senior Financial Researcher with status "In Progress" and "Thinking...".*
 
 - **Building the project** — CrewAI builds the `financial-researcher` package and may install/uninstall packages.
 - **Pydantic warnings** — Deprecation warnings from dependencies (e.g. `crewai_tools`); they do not stop the run.
@@ -134,6 +147,10 @@ flowchart TB
 | 1     | `research_task` | `researcher`   | Web research on the company using Serper |
 | 2     | `analysis_task` | `analyst`      | Writes the report using research output as context |
 
+![Demo: Research task completed, Task Completion, then analysis task (Market Analyst) In Progress](assets/demo-3-tasks-completion.png)
+
+*Figure 3: Research task marked Completed (with "Used Search the internet with Serper"), Task Completion divider, then analysis task (Market Analyst) Executing / In Progress with its full task description.*
+
 This order and assignment come from:
 
 - **`crew.py`** — `Process.sequential` and the order of `@task` methods (and how tasks are collected).
@@ -180,6 +197,10 @@ So the researcher **uses the Serper tool** to search the web. In the log you’l
 - **Tool input** — e.g. `{"search_query": "Tesla current company status financial performance challenges news outlook 2023"}`
 - **Tool output** — Raw search results (organic results, “people also ask”, related searches) that the agent uses to build its research output.
 
+![Demo: Researcher Thought, Serper tool input (search query), and tool output (search results)](assets/demo-2-serper-tool.png)
+
+*Figure 2: Senior Financial Researcher's Thought, "Using tool: Search the internet with Serper", the search query sent to Serper, and the raw tool output (organic results, peopleAlsoAsk, relatedSearches).*
+
 When the research task is done, the log shows **Task Completion** for that task and agent. That completed output is the **context** for the next task.
 
 ---
@@ -223,6 +244,10 @@ So the analyst’s input is the researcher’s structured findings. When this ta
 ### 5. Final report in the terminal and on disk
 
 After the crew finishes, `main.py` prints the final output and a confirmation:
+
+![Demo: Both tasks completed, Crew Execution Completed, FINAL REPORT and report content](assets/demo-4-final-report.png)
+
+*Figure 4: Task 1 and Task 2 both Completed (green checkmarks), Crew Execution Completed with crew Name and ID, then "=== FINAL REPORT ===" and the markdown report (Executive Summary, Introduction, Historical Performance, etc.) — same content saved to `output/report.md`.*
 
 ```
 === FINAL REPORT ===
