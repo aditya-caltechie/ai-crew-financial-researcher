@@ -1,10 +1,196 @@
-# ai-crew-financial-researcher
-Crew AI project for Financial Researcher 
+# AI Crew Financial Researcher
 
+A multi-agent AI application that performs comprehensive financial research and reporting on companies using the [CrewAI](https://github.com/joaomdmoura/crewai) open-source framework. Two specialized agents collaborate: a **Researcher** gathers data via web search, and an **Analyst** synthesizes it into a structured markdown report.
 
-# Create a crew ai project (which creates all skeleton and config files )
-crewai create crew financial_researcher
+---
 
-# Run the project
- crewai run
+## Purpose
 
+This project demonstrates how to build an AI-powered research pipeline with CrewAI. It automates the workflow of:
+
+1. **Research** — Gathering information on a company (status, performance, challenges, news, outlook)
+2. **Analysis** — Creating a professional report with executive summary, key insights, and market outlook
+
+Use it to quickly produce research reports on any public company for due diligence, market analysis, or learning.
+
+---
+
+## Features
+
+- **Multi-agent orchestration** — Sequential pipeline with specialized agents
+- **Web search integration** — Serper API for real-time company data and news
+- **Structured output** — Markdown reports saved to `output/report.md`
+- **Config-driven design** — Agents and tasks defined in YAML for easy customization
+- **Multiple LLM support** — Researcher uses OpenAI; Analyst uses Groq (configurable)
+
+---
+
+## Architecture
+
+The application uses a **Crew** of two agents:
+
+| Agent      | Role                      | Tools          | LLM                      |
+|-----------|---------------------------|----------------|--------------------------|
+| Researcher | Senior Financial Researcher | SerperDevTool  | openai/gpt-4o-mini       |
+| Analyst   | Market Analyst & Report writer | —              | groq/llama-3.3-70b-versatile |
+
+Tasks execute sequentially: the Analyst receives the Researcher’s output as context before writing the report.
+
+For detailed architecture, flow diagrams, and concepts, see [docs/](docs/).
+
+---
+
+## Prerequisites
+
+- **Python** 3.10–3.12
+- **CrewAI** (install via project)
+- **API keys** (see [Configuration](#configuration))
+
+---
+
+## Installation
+
+### 1. Clone the repository
+
+```bash
+git clone <your-repo-url>
+cd ai-crew-financial-researcher
+```
+
+### 2. Navigate to the CrewAI project
+
+```bash
+cd src/financial_researcher
+```
+
+### 3. Install dependencies
+
+CrewAI will create a virtual environment and install dependencies when you run the project. Alternatively, use [uv](https://github.com/astral-sh/uv) or pip:
+
+```bash
+# With uv (recommended)
+uv sync
+
+# Or with pip
+pip install -e .
+```
+
+---
+
+## Configuration
+
+Create a `.env` file in `src/financial_researcher/` with your API keys:
+
+```env
+# Required for the Researcher agent (OpenAI)
+OPENAI_API_KEY=sk-...
+
+# Required for the Analyst agent (Groq)
+GROQ_API_KEY=gsk_...
+
+# Required for web search (Serper)
+SERPER_API_KEY=...
+```
+
+| Variable         | Used by   | Purpose                          |
+|------------------|-----------|----------------------------------|
+| `OPENAI_API_KEY` | Researcher | LLM for research                 |
+| `GROQ_API_KEY`   | Analyst   | LLM for report writing           |
+| `SERPER_API_KEY` | Researcher | Web search via SerperDevTool     |
+
+Get keys from: [OpenAI](https://platform.openai.com/api-keys) | [Groq](https://console.groq.com/) | [Serper](https://serper.dev/)
+
+---
+
+## Usage
+
+### Run with CrewAI CLI
+
+From `src/financial_researcher/`:
+
+```bash
+crewai run
+```
+
+### Run with Python
+
+```bash
+cd src/financial_researcher
+python -m financial_researcher.main
+```
+
+Or:
+
+```bash
+financial_researcher
+```
+
+### Customize the target company
+
+Edit `src/financial_researcher/src/financial_researcher/main.py`:
+
+```python
+inputs = {
+    'company': 'Apple'  # Change to any company name
+}
+```
+
+---
+
+## Output
+
+- **Console** — The full report is printed to stdout
+- **File** — Saved to `src/financial_researcher/output/report.md`
+
+---
+
+## Project Structure
+
+```
+ai-crew-financial-researcher/
+├── README.md
+├── docs/
+│   ├── architecture.md    # Architecture, flow diagrams
+│   ├── concepts.md        # CrewAI concepts (Crew, Agent, Task)
+│   └── execution.md       # Execution logs
+└── src/financial_researcher/
+    ├── src/financial_researcher/
+    │   ├── crew.py        # Crew, agents, tasks definition
+    │   ├── main.py        # Entry point
+    │   ├── config/
+    │   │   ├── agents.yaml
+    │   │   └── tasks.yaml
+    │   └── tools/
+    │       └── custom_tool.py
+    ├── output/
+    │   └── report.md      # Generated report
+    ├── knowledge/         # Optional knowledge sources
+    └── pyproject.toml
+```
+
+---
+
+## Documentation
+
+| Document        | Description                                      |
+|-----------------|--------------------------------------------------|
+| [AGENTS.md](AGENTS.md) | Contributor map: layout, components, run commands |
+| [docs/architecture.md](docs/architecture.md) | Architecture, flow diagram, components           |
+| [docs/concepts.md](docs/concepts.md)         | CrewAI basics: Crew, Flow, Agent, Task           |
+| [docs/execution.md](docs/execution.md)       | Example execution and results                    |
+
+---
+
+## Create a New CrewAI Project
+
+To scaffold a new CrewAI project from scratch:
+
+```bash
+crewai create crew my_project_name
+```
+
+---
+
+## License
+
+MIT
