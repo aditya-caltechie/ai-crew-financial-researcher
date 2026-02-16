@@ -1,3 +1,14 @@
+# Agent Configuration - Step 1 of Implementation Guide
+# 
+# Define your AI team members here. Each agent needs:
+# - role: What the agent does (be specific)
+# - goal: What the agent aims to achieve
+# - backstory: Background that shapes behavior and decision-making
+# - llm: Language model to use (e.g., openai/gpt-4o-mini, groq/llama-3.3-70b-versatile)
+#
+# Use placeholders like {company} that will be filled from inputs in main.py
+# Tools are attached in crew.py (Step 3), not here.
+
 researcher:
   role: >
     Senior Financial Researcher for {company}
@@ -8,7 +19,7 @@ researcher:
     the most relevant information about {company}.
     Known for your ability to find the most relevant
     information and present it in a clear and concise manner.
-  llm: openai/gpt-4o-mini
+  llm: openai/gpt-4o-mini  # Faster/cheaper model for research tasks
 
 analyst:
   role: >
@@ -21,4 +32,4 @@ analyst:
     and company research. You have a talent for identifying patterns and extracting
     meaningful insights from research data, then communicating
     those insights through well crafted reports.
-  llm: groq/llama-3.3-70b-versatile
+  llm: groq/llama-3.3-70b-versatile  # More capable model for analysis/writing tasks
