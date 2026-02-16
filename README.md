@@ -153,20 +153,6 @@ cd src/financial_researcher
 uv run pytest tests/
 ```
 
-One-liner from the repo root:
-
-```bash
-cd src/financial_researcher && uv sync --extra dev && uv run pytest tests/
-```
-
-**If 0 tests are collected:** The repo root has a different `pyproject.toml`. Run from the repo root:
-
-```bash
-uv run --directory src/financial_researcher pytest tests/
-```
-
-Tests cover the main entrypoint (with mocked crew), crew/agent/task setup, and the custom tool. No API keys are required for tests.
-
 ---
 
 ## Output
