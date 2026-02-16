@@ -17,6 +17,14 @@ This project demonstrates how to build an AI-powered research pipeline with Crew
 
 Use it to quickly produce research reports on any public company for due diligence, market analysis, or learning.
 
+### Quick reference
+
+| Task        | Directory                  | Command                          |
+|-------------|----------------------------|----------------------------------|
+| Install deps| `src/financial_researcher/` | `uv sync`                        |
+| Run project | `src/financial_researcher/` | `uv sync` then `crewai run`      |
+| Run tests   | `src/financial_researcher/` | `uv sync --extra dev` then `uv run pytest tests/` |
+
 ---
 
 ## Features
@@ -61,23 +69,16 @@ git clone <your-repo-url>
 cd ai-crew-financial-researcher
 ```
 
-### 2. Navigate to the CrewAI project
+### 2. Install dependencies with uv sync
+
+The CrewAI project lives in `src/financial_researcher/`. **All commands below must be run from that directory.**
 
 ```bash
 cd src/financial_researcher
-```
-
-### 3. Install dependencies
-
-CrewAI will create a virtual environment and install dependencies when you run the project. Alternatively, use [uv](https://github.com/astral-sh/uv) or pip:
-
-```bash
-# With uv (recommended)
 uv sync
-
-# Or with pip
-pip install -e .
 ```
+
+**What `uv sync` does:** Creates a virtual environment (if needed), installs dependencies from `pyproject.toml`, and generates/updates the lock file. Run it whenever you clone the repo or change dependencies.
 
 ---
 
@@ -108,11 +109,13 @@ Get keys from: [OpenAI](https://platform.openai.com/api-keys) | [Groq](https://c
 
 ## Usage
 
-### Run with CrewAI CLI
+### How to run the project
 
-From `src/financial_researcher/`:
+**Working directory:** Always run from `src/financial_researcher/`.
 
 ```bash
+cd src/financial_researcher
+uv sync                    # if not already done
 crewai run
 ```
 
@@ -130,18 +133,36 @@ inputs = {
 
 ## Running tests
 
-From `src/financial_researcher/`, install dev dependencies and run the test suite:
+**Working directory:** Same as the project — run from `src/financial_researcher/`.
+
+### Step 1: Install dev dependencies
+
+Tests require `pytest` and `pytest-mock`. Install them with:
 
 ```bash
 cd src/financial_researcher
-
-# Install dev dependencies (pytest, pytest-mock)
 uv sync --extra dev
-# or: pip install -e ".[dev]"
+```
 
-# Run all tests
-uv run pytest
-# or: pytest
+**What `uv sync --extra dev` does:** Installs the base dependencies plus the `[dev]` optional group (pytest, pytest-mock). Run this once before running tests.
+
+### Step 2: Run the tests
+
+```bash
+cd src/financial_researcher
+uv run pytest tests/
+```
+
+One-liner from the repo root:
+
+```bash
+cd src/financial_researcher && uv sync --extra dev && uv run pytest tests/
+```
+
+**If 0 tests are collected:** The repo root has a different `pyproject.toml`. Run from the repo root:
+
+```bash
+uv run --directory src/financial_researcher pytest tests/
 ```
 
 Tests cover the main entrypoint (with mocked crew), crew/agent/task setup, and the custom tool. No API keys are required for tests.
