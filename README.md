@@ -1,5 +1,7 @@
 # Financial Researcher
 
+[![CI](https://github.com/aditya-caltechie/ai-crew-financial-researcher/actions/workflows/ci.yml/badge.svg)](https://github.com/aditya-caltechie/ai-crew-financial-researcher/actions)
+
 A multi-agent AI application that performs comprehensive financial research and reporting on companies using the [CrewAI](https://github.com/joaomdmoura/crewai) open-source framework. Two specialized agents collaborate: a **Researcher** gathers data via web search, and an **Analyst** synthesizes it into a structured markdown report.
 
 **CrewAI** is a Python framework for orchestrating autonomous AI agents. It lets you define agents (with roles, goals, and tools), chain them into tasks, and run them as a Crew. Agents collaborate by passing context between tasks and can use tools like web search, making CrewAI well-suited for multi-step research, analysis, and automation pipelines.
