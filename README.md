@@ -309,19 +309,40 @@ ai-crew-financial-researcher/
 
 ---
 
-## Related Projects
+## Related CrewAI Projects
 
-### Advanced Example: Stock Picker
+Two other CrewAI projects from the same author explore different orchestration patterns and use cases:
 
-For a more advanced CrewAI implementation demonstrating additional features, check out [**ai-crew-stock-picker**](https://github.com/aditya-caltechie/ai-crew-stock-picker):
+### [ai-crew-stock-picker](https://github.com/aditya-caltechie/ai-crew-stock-picker)
 
-- **Hierarchical process** — Manager agent delegates tasks to worker agents (vs. sequential process used here)
-- **Structured outputs** — Pydantic models for validated task results
-- **Custom tools** — Pushover notifications and other external integrations
-- **Memory** — RAG + SQLite for long-term, short-term, and entity memory
-- **Multi-step research** — Finds trending companies, researches each, then recommends the best investment
+StockPicker is a **hierarchical** multi-agent system: a Manager agent delegates to worker agents that find trending companies in a sector, research each in depth, and recommend the best one for investment. It uses **Serper** for web search, **Pushover** for optional push notifications, **Pydantic** for structured outputs, and **RAG + SQLite** for long-term, short-term, and entity memory. Inputs are sector and date; outputs include trending companies, research reports, and a final stock pick (with optional push). Good for learning hierarchical orchestration and memory-backed pipelines.
 
-This project uses a **sequential process** (tasks run in order), while Stock Picker demonstrates a **hierarchical process** (manager coordinates worker agents). Both patterns are useful depending on your workflow needs.
+### [ai-crew-engineering-team](https://github.com/aditya-caltechie/ai-crew-engineering-team)
+
+Engineering Team is a **sequential** four-agent pipeline that turns natural language requirements into a full software deliverable: an **Engineering Lead** produces a design doc, a **Backend Engineer** implements a Python module, a **Frontend Engineer** builds a Gradio demo UI, and a **Test Engineer** writes unit tests. Code is executed inside **Docker** via CrewAI’s Code Interpreter for safety. Inputs are requirements text, module name, and class name; outputs are design markdown, backend module, `app.py`, and tests under a single `output/` directory. No external APIs—code generation and execution only.
+
+---
+
+## Comparison: All Three CrewAI Projects
+
+| Aspect | ai-crew-financial-researcher _(this project)_ | [ai-crew-stock-picker](https://github.com/aditya-caltechie/ai-crew-stock-picker) | [ai-crew-engineering-team](https://github.com/aditya-caltechie/ai-crew-engineering-team) |
+|--------|----------------------------------------------|-----------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| **Process** | Sequential (2 tasks) | Hierarchical (Manager → workers) | Sequential (4 tasks) |
+| **Agents** | 2 (Researcher, Analyst) | Manager + worker agents (finder, researcher, picker) | 4 (Engineering Lead, Backend, Frontend, Test Engineer) |
+| **Input** | Company name | Sector, date | Requirements (natural language), module name, class name |
+| **Output** | Markdown report | Best stock pick, JSON reports, push notification | Design doc, Python backend, Gradio UI, unit tests |
+| **Tools** | SerperDevTool (web search) | Serper, Pushover, RAG + SQLite | Code Interpreter (Docker) |
+| **External APIs** | Serper | Serper, Pushover | None (code-only) |
+| **Memory** | No | Yes (long-term, short-term, entity) | No |
+| **Structured output** | Markdown | Pydantic models + markdown | Markdown + Python files |
+| **Code execution** | No | No | Yes (Docker sandbox) |
+| **Use case** | Research & reporting on one company | Investment recommendation (find → research → pick) | Automated software development (design → code → UI → tests) |
+
+**Pipeline summary**
+
+- **Financial Researcher** _(this project)_ — Search → research document → report. Best for learning sequential flows and Serper integration.
+- **Stock Picker** — Manager delegates: find trending companies → research each → pick best → optional push. Demonstrates hierarchical orchestration, memory, and notifications.
+- **Engineering Team** — Design → code → UI → tests. Full software lifecycle automation with code generation and execution in Docker.
 
 ---
 
